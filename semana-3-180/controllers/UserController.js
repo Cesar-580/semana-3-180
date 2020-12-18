@@ -19,7 +19,7 @@ exports.signin = async(req,res,next) =>{
 
                 const token = jwt.sign({
                     id : user.id,
-                    nombre : user.nombre,
+                    nombre : user.name,
                     rol:user.rol,
                     email:user.email
                 } ,' hola soy una cadena secreta ',{
@@ -29,7 +29,8 @@ exports.signin = async(req,res,next) =>{
                 res.status(200).send({
                     auth:true, 
                     accessToken: token, 
-                    user:user
+                    // Mantener oculto lo que devuelve la base de datos
+                    // user:user
                 });
                  
             }else{
@@ -52,6 +53,11 @@ exports.signin = async(req,res,next) =>{
         next(error);
     }
 }
+
+
+
+
+
 
 
 // //Actualizar
@@ -78,12 +84,13 @@ exports.signin = async(req,res,next) =>{
 //     }
 // }
 
-// exports.registrar = async(req,res,next) =>{
-//     try{ 
+exports.register = async(req,res,next) =>{
+    try{ 
+        req.body.password = bcrypt.hashSync(req.body.password, 10);
+        const user = await models.user.create(req.body);
+        res.status(200).json(user)
+    }catch{
 
-
-//     }catch{
-
-//         next(error);
-//     }
-// }
+        next(error);
+    }
+}

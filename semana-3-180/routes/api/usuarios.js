@@ -23,12 +23,14 @@ router.get('/', async(req,res)=>{
 
 // Registrar usuarios
 //Método 2 para .com/api/register/
-router.post('/register', async(req,res)=>{
-    req.body.password = bcrypt.hashSync(req.body.password, 10);                     //Se encripta la password
-    //Busca en la base de datos y devuelve todos los usuarios
-    const user = await models.user.create(req.body);
-    res.status(200).json(user)
-});
+// router.post('/register', async(req,res)=>{
+//     req.body.password = bcrypt.hashSync(req.body.password, 10);                     //Se encripta la password
+//     //crea un body con la información
+//     const user = await models.user.create(req.body);
+//     res.status(200).json(user)
+// });
+
+router.post('/register', UserController.register)
 
 
 // Logear usuarios
